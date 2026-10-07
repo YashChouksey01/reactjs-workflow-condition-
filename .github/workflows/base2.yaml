@@ -40,7 +40,7 @@ jobs:
         run: npm run test
       - name: Upload test report
        # if: steps.npm-tests.outcome == 'failure'    # changed mainContent.test.jsx to fail the test {if not working }
-        if: always()  # upload the test report even if the test fails
+        if: always()                                 # upload the test report even if the test fails , step level condition
         uses: actions/upload-artifact@v6
         with:
           name: test-report
@@ -48,6 +48,7 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    if: always()  # job level condition, run the build job even if the test job fails
     steps:
       - name: Get code
         uses: actions/checkout@v6
