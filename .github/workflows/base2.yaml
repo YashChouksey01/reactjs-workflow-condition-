@@ -39,6 +39,7 @@ jobs:
         id: npm-tests
         run: npm run test
       - name: Upload test report
+        if: steps.npm-tests.outcome == 'failure'    # changed mainContent.test.jsx to fail the test
         uses: actions/upload-artifact@v6
         with:
           name: test-report
@@ -65,15 +66,15 @@ jobs:
         with:
           name: dist-files
           path: dist
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get build artifacts
-        uses: actions/download-artifact@v5
-        with:
-          name: dist-files
-      - name: Output contents
-        run: ls
-      - name: Deploy
-        run: echo "Deploying..."
+#   deploy:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Get build artifacts
+#         uses: actions/download-artifact@v5
+#         with:
+#           name: dist-files
+#       - name: Output contents
+#         run: ls
+#       - name: Deploy
+#         run: echo "Deploying..."
