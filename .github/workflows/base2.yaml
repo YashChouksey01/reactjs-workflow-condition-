@@ -24,6 +24,8 @@ jobs:
         run: npm run lint
   test:
     runs-on: ubuntu-latest
+    container:
+      image: node:18
     steps:
       - name: Get code
         uses: actions/checkout@v6
