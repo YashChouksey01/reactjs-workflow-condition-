@@ -2,10 +2,11 @@ name: Matrix example
 on: push
 jobs:
   build:
-    strategy:   # strategy is used to define a matrix of different configurations for the job
+    strategy:   
         matrix: # matrix defines the different combinations of parameters for the job
-            node-version: [12, 14]      #is to tell the matrix to create separate job runs for Node.js 12 and Node.js 14. It does not install Node.js by itself.
-            operating-system: [ubuntu-slim, windows-latest]  
+            node-version: [12, 14]      #is used to create separate job runs for Node.js 12 and Node.js 14. It does not install Node.js by itself.Exactly. 
+                                        #node-version has nothing to do with the operating system version.
+            operating-system: [ubuntu-slim, windows-latest]   # cartesian product 
             include: 
                 - node-version: 16                   
                   operating-system: ubuntu-latest 
@@ -31,14 +32,14 @@ jobs:
 
 
 
-    runs-on:  ${{ matrix.operating-system }}   #ubuntu-latest
+    runs-on:  ${{ matrix.operating-system }}   # earlier -> ubuntu-latest
     steps:
       - name: get the code
         uses: actions/checkout@v6
       - name: Install NodeJS
         uses: actions/setup-node@v5
         with:
-          node-version:   ${{ matrix.node-version }}  # Now the matrix value is actually used:  If not used matric then if  you want Node 14 too, you'd have to create another job manually.
+          node-version:   ${{ matrix.node-version }}  # Now the matrix value is actually used:  If not used matric then if you want Node 14 too, you'd have to create another job manually.
       - name: install dependencies
         run: npm install
       - name: build the project
