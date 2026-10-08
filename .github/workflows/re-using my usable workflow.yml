@@ -115,3 +115,13 @@ jobs:
     uses: ./.github/workflows/reuse.yaml  #1task) calling the reusable workflow
     with:
         artifact-name: dist-files   #2task)
+    secrets:                        #3task)
+        password: ${{secrets.PASSWORD}}
+  
+  print-output:             #4task)   
+    needs: deploy1
+    runs-on: ubuntu-slim
+    steps:
+        - name: getting output
+          run:  echo ${{needs.deploy1.outputs.result}} #4task)
+

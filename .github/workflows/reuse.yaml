@@ -41,8 +41,22 @@ on:
         required: false
         default: dist
         type: string
+      
+    secrets:     #3task) 
+      password:
+        required: true
+        description: Password for deployment
+    
+    outputs:   #4task) 
+      result:
+        description: your result name
+        value: ${{ jobs.deploy2.outputs.outcome }}
+   
+        
 jobs:
-  deploy2:
+  deploy2: 
+    outputs:  #4task) 
+      outcome: ${{steps.set-result.outputs.step-result}}
     runs-on: ubuntu-slim
     steps:
       - name: get artifact         #2task)
@@ -51,5 +65,8 @@ jobs:
           name: ${{ inputs.artifact-name }}
       - name: list artifact name    #2task)
         run: ls
-      - name: output data                          # 1task)
+      - name: set the outputs       #4task)
+        id: set-result
+        run: echo "step-result=success" >> $GITHUB_OUTPUT
+      - name: output data                          #1task)
         run: echo "hello from the reusable workflow"
