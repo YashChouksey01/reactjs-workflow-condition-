@@ -64,10 +64,13 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: ${{ inputs.artifact-name }}
+
       - name: list artifact name    #2task)
         run: ls
+        
       - name: set the outputs       #4task)
         id: set-result
         run: echo "step-result=success" >> $GITHUB_OUTPUT
+
       - name: output data                          #1task)
         run: echo "hello from the reusable workflow"

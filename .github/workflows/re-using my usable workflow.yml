@@ -111,7 +111,7 @@ jobs:
         with:
           name: dist-files
           path: dist
-  deploy1:
+  deploy1:                                 #1task)
     uses: ./.github/workflows/reuse.yaml  #1task) calling the reusable workflow
     with:
         artifact-name: dist-files   #2task)
@@ -124,6 +124,6 @@ jobs:
     steps:
         - name: getting output
           run:  echo ${{needs.deploy1.outputs.result}} #4task)
-        - name: secrets
-          run: echo ${{secrets.PASSWORD}}
+        # - name: secrets
+        #   run: echo ${{secrets.PASSWORD}}
 
