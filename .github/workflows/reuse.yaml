@@ -60,6 +60,7 @@ jobs:
     runs-on: ubuntu-slim
     steps:
       - name: get artifact         #2task)
+        continue-on-error: true
         uses: actions/download-artifact@v5
         with:
           name: ${{ inputs.artifact-name }}
