@@ -1,33 +1,33 @@
-name: Matrix example
-on: push
-jobs:
-  build:
-    strategy:   # strategy is used to define a matrix of different configurations for the job
-        matrix: # matrix defines the different combinations of parameters for the job
-            node-version: [12, 14]
-            operating-system: [ubuntu-slim, windows-latest]  
-            include: 
-                - node-version: 16
-                - operating-system: ubuntu-latest
-            exclude:
-                - operating-system: ubuntu-slim
-    # strategy:
-    #   matrix:
-    #     node-version: [12, 14]
-    #     operating-system: [ubuntu-slim, windows-latest]
-    #     include:
-    #       - node-version: 16
-    #     exclude:
-    #       - operating-system: ubuntu-slim
-    runs-on: ubuntu-latest
-    steps:
-      - name: get the code
-        uses: actions/checkout@v6
-      - name: Install NodeJS
-        uses: actions/setup-node@v5
-        with:
-          node-version: 18
-      - name: install dependencies
-        run: npm install
-      - name: build the project
-        run: npm run build
+# name: Matrix example
+# on: push
+# jobs:
+#   build:
+#     strategy:   # strategy is used to define a matrix of different configurations for the job
+#         matrix: # matrix defines the different combinations of parameters for the job
+#             node-version: [12, 14]
+#             operating-system: [ubuntu-slim, windows-latest]  
+#             include: 
+#                 - node-version: 16 
+#              #   - operating-system: ubuntu-latest 
+#             exclude:
+#                 - operating-system: ubuntu-slim
+#     # strategy:
+#     #   matrix:
+#     #     node-version: [12, 14]
+#     #     operating-system: [ubuntu-slim, windows-latest]
+#     #     include:
+#     #       - node-version: 16
+#     #     exclude:
+#     #       - operating-system: ubuntu-slim
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: get the code
+#         uses: actions/checkout@v6
+#       - name: Install NodeJS
+#         uses: actions/setup-node@v5
+#         with:
+#           node-version: 18
+#       - name: install dependencies
+#         run: npm install
+#       - name: build the project
+#         run: npm run build

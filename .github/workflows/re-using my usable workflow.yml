@@ -78,3 +78,18 @@
 #     steps:
 #       - name: getting output
 #         run: echo ${{ needs.deploy.outputs.result }}
+
+#########################################################
+
+name: reusable-workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+    deploy1:
+        uses: ./.github/workflows/reuse.yaml
+

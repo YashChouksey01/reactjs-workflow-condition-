@@ -1,86 +1,86 @@
-name: Test and Build Workflow
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v6
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm install
-      - name: Lint code
-        run: npm run lint
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v6
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm install
-      - name: Test code
-        id: npm-tests
-        continue-on-error: true #(4task) to continue the workflow even if the test fails / this step fails
-        run: npm run test
-      - name: Upload test report                    #(1task) changed mainContent.test.jsx (added not.) to fail the npm-test 
-       # if: steps.npm-tests.outcome == 'failure'   #1)if is not working but can use failure() condition to upload the test report step even if the test fails
-       # if: always()                               #(2task) step level condition ,upload the test report step even if the test fails or passes
-        uses: actions/upload-artifact@v6
-        with:
-          name: test-report
-          path: test.json
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    #if: always()  #(3task) job level condition, run the build job even if the test job fails
-    steps:
-      - name: Get code
-        uses: actions/checkout@v6
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm install
-      - name: Build website
-        id: build-website
-        run: npm run build
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v6
-        with:
-          name: dist-files
-          path: dist
-#   deploy:
-#     needs: build
+# name: Test and Build Workflow
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+# jobs:
+#   lint:
 #     runs-on: ubuntu-latest
 #     steps:
-#       - name: Get build artifacts
-#         uses: actions/download-artifact@v5
+#       - name: Get code
+#         uses: actions/checkout@v6
+#       - name: Cache dependencies
+#         id: cache
+#         uses: actions/cache@v5
+#         with:
+#           path: ~/.npm
+#           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+#       - name: Install dependencies
+#         run: npm install
+#       - name: Lint code
+#         run: npm run lint
+#   test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Get code
+#         uses: actions/checkout@v6
+#       - name: Cache dependencies
+#         id: cache
+#         uses: actions/cache@v5
+#         with:
+#           path: ~/.npm
+#           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+#       - name: Install dependencies
+#         run: npm install
+#       - name: Test code
+#         id: npm-tests
+#         continue-on-error: true #(4task) to continue the workflow even if the test fails / this step fails
+#         run: npm run test
+#       - name: Upload test report                    #(1task) changed mainContent.test.jsx (added not.) to fail the npm-test 
+#        # if: steps.npm-tests.outcome == 'failure'   #1)if is not working but can use failure() condition to upload the test report step even if the test fails
+#        # if: always()                               #(2task) step level condition ,upload the test report step even if the test fails or passes
+#         uses: actions/upload-artifact@v6
+#         with:
+#           name: test-report
+#           path: test.json
+#   build:
+#     needs: test
+#     runs-on: ubuntu-latest
+#     #if: always()  #(3task) job level condition, run the build job even if the test job fails
+#     steps:
+#       - name: Get code
+#         uses: actions/checkout@v6
+#       - name: Cache dependencies
+#         id: cache
+#         uses: actions/cache@v5
+#         with:
+#           path: ~/.npm
+#           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+#       - name: Install dependencies
+#         run: npm install
+#       - name: Build website
+#         id: build-website
+#         run: npm run build
+#       - name: Upload artifacts
+#         uses: actions/upload-artifact@v6
 #         with:
 #           name: dist-files
-#       - name: Output contents
-#         run: ls
-#       - name: Deploy
-#         run: echo "Deploying..."
+#           path: dist
+# #   deploy:
+# #     needs: build
+# #     runs-on: ubuntu-latest
+# #     steps:
+# #       - name: Get build artifacts
+# #         uses: actions/download-artifact@v5
+# #         with:
+# #           name: dist-files
+# #       - name: Output contents
+# #         run: ls
+# #       - name: Deploy
+# #         run: echo "Deploying..."
 
-#-----------------
-# https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#steps-context
+# #-----------------
+# # https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#steps-context
