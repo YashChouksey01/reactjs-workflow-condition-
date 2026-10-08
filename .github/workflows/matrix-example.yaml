@@ -16,7 +16,7 @@ jobs:
 # ┌──────────┬─────────────────┐
 # │ Node     │ Operating System│
 # ├──────────┼─────────────────┤
-# │ 12       │ windows-latest  │
+# │ 12       │ windows-latest  │  Node 12 too old for the version of Vite your project is using. therefor it'll cause error
 # │ 14       │ windows-latest  │
 # │ 16       │ ubuntu-latest   │
 # └──────────┴─────────────────┘

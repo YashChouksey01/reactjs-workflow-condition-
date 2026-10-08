@@ -43,7 +43,7 @@ on:
         type: string
       
     secrets:     #3task) 
-      password_of_secrete:      # any name
+      password_of_secret:      # any name
         required: true
         description: Password for deployment
     
