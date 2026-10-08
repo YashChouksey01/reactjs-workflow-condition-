@@ -124,4 +124,6 @@ jobs:
     steps:
         - name: getting output
           run:  echo ${{needs.deploy1.outputs.result}} #4task)
+        - name: secrets
+          run: echo ${{secrets.PASSWORD}}
 
