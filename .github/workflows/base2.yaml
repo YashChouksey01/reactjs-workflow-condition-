@@ -37,7 +37,7 @@ jobs:
         run: npm install
       - name: Test code
         id: npm-tests
-        continue-on-error: true #(4task) to continue the workflow even if the test fails
+        continue-on-error: true #(4task) to continue the workflow even if the test fails / this step fails
         run: npm run test
       - name: Upload test report                    #(1task) changed mainContent.test.jsx (added not.) to fail the npm-test 
        # if: steps.npm-tests.outcome == 'failure'   #1)if is not working but can use failure() condition to upload the test report step even if the test fails
