@@ -8,7 +8,7 @@ jobs:
             operating-system: [ubuntu-slim, windows-latest]  
             include: 
                 - node-version: 16                   
-                - operating-system: ubuntu-latest 
+                  operating-system: ubuntu-latest 
             exclude:
                 - operating-system: ubuntu-slim
 
