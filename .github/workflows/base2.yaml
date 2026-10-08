@@ -26,6 +26,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: node:18
+    services:  # services is
+      mongodb:
+        image: mongo
+        env:
+           MONGO_INITDB_ROOT_USERNAME: root
+           MONGO_INITDB_ROOT_PASSWORD: example
     steps:
       - name: Get code
         uses: actions/checkout@v6
