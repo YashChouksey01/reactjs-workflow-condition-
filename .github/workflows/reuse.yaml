@@ -33,10 +33,23 @@
 ############################################
 
 name: Reuse workflow example
-on: workflow_call  #workflow_call is used when you want to call a workflow from another workflow
+on: 
+  workflow_call:  #1task) workflow_call is used when you want to call a workflow from another workflow
+    inputs:       #2task)
+      artifact-name:
+        description: name of the artifact
+        required: false
+        default: dist
+        type: string
 jobs:
   deploy2:
     runs-on: ubuntu-slim
     steps:
-      - name: output data
+      - name: get artifact         #2task)
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ inputs.artifact-name }}
+      - name: list artifact name    #2task)
+        run: ls
+      - name: output data                          # 1task)
         run: echo "hello from the reusable workflow"
