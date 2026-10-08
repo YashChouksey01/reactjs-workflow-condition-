@@ -6,6 +6,11 @@ jobs:
         matrix: # matrix defines the different combinations of parameters for the job
             node-version: [12, 14]
             operating-system: [ubuntu-slim, windows-latest]  
+            include: 
+                - node-version: 16
+              #  - operating-system: windows-latest
+            exclude:
+                - operating-system: ubuntu-slim
     # strategy:
     #   matrix:
     #     node-version: [12, 14]
