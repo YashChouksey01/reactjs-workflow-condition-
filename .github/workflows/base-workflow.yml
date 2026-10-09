@@ -31,9 +31,12 @@ jobs:
       - name: Get code
         uses: actions/checkout@v6
       - name: using custom action for installing and caching deps
+        id: cache-deps1
         uses: ./.github/action/cachedeps
         with:
             caching: 'false'
+      - name: output of custom action
+        run: echo "Cache used? = ${{steps.cache-deps1.outputs.used-cache}}"
     #   - name: Cache dependencies
     #     id: cache
     #     uses: actions/cache@v5

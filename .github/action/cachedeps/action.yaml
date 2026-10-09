@@ -24,5 +24,5 @@ runs:
        if: inputs.caching != 'true'
        run: |
         npm install
-        echo "cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT
+        echo "cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
        shell: bash
