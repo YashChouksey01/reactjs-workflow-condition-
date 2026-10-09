@@ -1,0 +1,14 @@
+name: installing and caching dependencies
+description: installing the dependencies (via npm) and if found cache them
+runs:
+  using: 'composite'
+  steps:
+     - name: Cache dependencies
+       id: cache
+       uses: actions/cache@v5
+       with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+     - name: Install dependencies
+       run: npm install
+       shell: bash
