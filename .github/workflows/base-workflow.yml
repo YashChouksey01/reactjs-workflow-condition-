@@ -28,7 +28,7 @@ jobs:
       - name: Get code
         uses: actions/checkout@v6
       - name: using custom action for installing and caching deps
-        uses: ./github/action/cachedeps
+        uses: ./.github/action/cachedeps
     #   - name: Cache dependencies
     #     id: cache
     #     uses: actions/cache@v5
