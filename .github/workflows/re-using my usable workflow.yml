@@ -1,3 +1,86 @@
+# # name: reusable-workflow
+# # on:
+# #   push:
+# #     branches:
+# #       - main
+# #   pull_request:
+# #     branches:
+# #       - main
+# # jobs:
+# #   lint:
+# #     runs-on: ubuntu-latest
+# #     steps:
+# #       - name: Get code
+# #         uses: actions/checkout@v6
+# #       - name: Cache dependencies
+# #         id: cache
+# #         uses: actions/cache@v5
+# #         with:
+# #           path: ~/.npm
+# #           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+# #       - name: Install dependencies
+# #         run: npm install
+# #       - name: Lint code
+# #         run: npm run lint
+# #   test:
+# #     runs-on: ubuntu-latest
+# #     steps:
+# #       - name: Get code
+# #         uses: actions/checkout@v6
+# #       - name: Cache dependencies
+# #         id: cache
+# #         uses: actions/cache@v5
+# #         with:
+# #           path: ~/.npm
+# #           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+# #       - name: Install dependencies
+# #         run: npm install
+# #       - name: Test code
+# #         id: npm-tests
+# #         run: npm run test
+# #       - name: Upload test report
+# #         uses: actions/upload-artifact@v6
+# #         with:
+# #           name: test-report
+# #           path: test.json
+# #   build:
+# #     needs: test
+# #     runs-on: ubuntu-latest
+# #     steps:
+# #       - name: Get code
+# #         uses: actions/checkout@v6
+# #       - name: Cache dependencies
+# #         id: cache
+# #         uses: actions/cache@v5
+# #         with:
+# #           path: ~/.npm
+# #           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+# #       - name: Install dependencies
+# #         run: npm install
+# #       - name: Build website
+# #         id: build-website
+# #         run: npm run build
+# #       - name: Upload artifacts
+# #         uses: actions/upload-artifact@v6
+# #         with:
+# #           name: dist-files
+# #           path: dist
+# #   deploy:
+# #     needs: build
+# #     uses: ./.github/workflows/reuse.yaml
+# #     with:
+# #       artifact-name: dist-files
+# #     # secrets:
+# #     #   password: ${{ secrets.password }}
+# #   print-output:
+# #     needs: deploy
+# #     runs-on: ubuntu-slim
+# #     steps:
+# #       - name: getting output
+# #         run: echo ${{ needs.deploy.outputs.result }}
+
+# #########################################################
+
 # name: reusable-workflow
 # on:
 #   push:
@@ -7,44 +90,7 @@
 #     branches:
 #       - main
 # jobs:
-#   lint:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Get code
-#         uses: actions/checkout@v6
-#       - name: Cache dependencies
-#         id: cache
-#         uses: actions/cache@v5
-#         with:
-#           path: ~/.npm
-#           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-#       - name: Install dependencies
-#         run: npm install
-#       - name: Lint code
-#         run: npm run lint
-#   test:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Get code
-#         uses: actions/checkout@v6
-#       - name: Cache dependencies
-#         id: cache
-#         uses: actions/cache@v5
-#         with:
-#           path: ~/.npm
-#           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-#       - name: Install dependencies
-#         run: npm install
-#       - name: Test code
-#         id: npm-tests
-#         run: npm run test
-#       - name: Upload test report
-#         uses: actions/upload-artifact@v6
-#         with:
-#           name: test-report
-#           path: test.json
-#   build:
-#     needs: test
+#   build:  #2task) from base2.yaml
 #     runs-on: ubuntu-latest
 #     steps:
 #       - name: Get code
@@ -65,64 +111,18 @@
 #         with:
 #           name: dist-files
 #           path: dist
-#   deploy:
-#     needs: build
-#     uses: ./.github/workflows/reuse.yaml
+#   deploy1:                                 #1task)
+#     uses: ./.github/workflows/reuse.yaml  #1task) calling the reusable workflow
 #     with:
-#       artifact-name: dist-files
-#     # secrets:
-#     #   password: ${{ secrets.password }}
-#   print-output:
-#     needs: deploy
+#         artifact-name: dist-files   #2task)
+#     secrets:                        #3task)
+#         password_of_secret: ${{secrets.PASSWORD}}  # Secret stored in GitHub
+  
+#   print-output:             #4task)   
+#     needs: deploy1
 #     runs-on: ubuntu-slim
 #     steps:
-#       - name: getting output
-#         run: echo ${{ needs.deploy.outputs.result }}
-
-#########################################################
-
-name: reusable-workflow
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-jobs:
-  build:  #2task) from base2.yaml
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v6
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm install
-      - name: Build website
-        id: build-website
-        run: npm run build
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v6
-        with:
-          name: dist-files
-          path: dist
-  deploy1:                                 #1task)
-    uses: ./.github/workflows/reuse.yaml  #1task) calling the reusable workflow
-    with:
-        artifact-name: dist-files   #2task)
-    secrets:                        #3task)
-        password_of_secret: ${{secrets.PASSWORD}}  # Secret stored in GitHub
-  
-  print-output:             #4task)   
-    needs: deploy1
-    runs-on: ubuntu-slim
-    steps:
-        - name: getting output
-          run:  echo ${{needs.deploy1.outputs.result}} #4task)  output of deploy1
+#         - name: getting output
+#           run:  echo ${{needs.deploy1.outputs.result}} #4task)  output of deploy1
        
 

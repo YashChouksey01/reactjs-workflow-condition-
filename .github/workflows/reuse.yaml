@@ -1,78 +1,79 @@
-# name: reuse workflow example
+# # name: reuse workflow example
+# # on: 
+# #   workflow_call:
+# #     inputs:
+# #       artifact-name:
+# #         description: name of the artifact
+# #         required: false
+# #         default: dist
+# #         type: string
+# #     # secrets:
+# #     #   password:
+# #     #     required: true
+# #     outputs:
+# #       result:
+# #         description: your result name
+# #         value: ${{ jobs.deploy.outputs.outcome }}
+# # jobs:
+# #   deploy:
+# #     outputs:
+# #       outcome: ${{ steps.set-result.outputs.step-result }}
+# #     runs-on: ubuntu-slim
+# #     steps:
+# #       - name: get artifact
+# #         uses: actions/download-artifact@v5
+# #         with:
+# #           name: ${{ inputs.artifact-name }}
+# #       - name: list artifact name
+# #         run: ls
+# #       - name: set the outputs
+# #         id: set-result
+# #         run: echo "step-result=success" >> $GITHUB_OUTPUT
+        
+# ############################################
+
+# name: Reuse workflow example
 # on: 
-#   workflow_call:
-#     inputs:
+#   workflow_call:  #1task) workflow_call is used when you want to call a workflow from another workflow
+#     inputs:       #2task) This defines the values that the calling workflow can send to this reusable workflow.
 #       artifact-name:
 #         description: name of the artifact
-#         required: false
+#         required: false   # when true -> It means the input must be provided when another workflow calls this reusable workflow.
 #         default: dist
 #         type: string
-#     # secrets:
-#     #   password:
-#     #     required: true
-#     outputs:
+      
+#     secrets:     #3task) 
+#       password_of_secret:      # any name
+#         required: true
+#         description: Password for deployment
+    
+#     outputs:   #4task) 
 #       result:
 #         description: your result name
-#         value: ${{ jobs.deploy.outputs.outcome }}
+#         value: ${{ jobs.deploy2.outputs.outcome }}
+   
+        
 # jobs:
-#   deploy:
-#     outputs:
-#       outcome: ${{ steps.set-result.outputs.step-result }}
+#   deploy2: 
+#     outputs:  #4task)  
+#       outcome: ${{steps.set-result.outputs.step-result}}
 #     runs-on: ubuntu-slim
 #     steps:
-#       - name: get artifact
+#       - name: get artifact         #2task)
+#         continue-on-error: true
 #         uses: actions/download-artifact@v5
 #         with:
 #           name: ${{ inputs.artifact-name }}
-#       - name: list artifact name
-#         run: ls
-#       - name: set the outputs
+
+        
+#       - name: set the outputs       #4task)
 #         id: set-result
 #         run: echo "step-result=success" >> $GITHUB_OUTPUT
         
-############################################
+#       - name: list artifact name  & use secret  #2task) #3task)
+#         run: | 
+#           ls 
+#           echo $secrets.password_of_secrete
+#       - name: output data                          #1task)
+#         run: echo "hello from the reusable workflow"
 
-name: Reuse workflow example
-on: 
-  workflow_call:  #1task) workflow_call is used when you want to call a workflow from another workflow
-    inputs:       #2task) This defines the values that the calling workflow can send to this reusable workflow.
-      artifact-name:
-        description: name of the artifact
-        required: false   # when true -> It means the input must be provided when another workflow calls this reusable workflow.
-        default: dist
-        type: string
-      
-    secrets:     #3task) 
-      password_of_secret:      # any name
-        required: true
-        description: Password for deployment
-    
-    outputs:   #4task) 
-      result:
-        description: your result name
-        value: ${{ jobs.deploy2.outputs.outcome }}
-   
-        
-jobs:
-  deploy2: 
-    outputs:  #4task)  
-      outcome: ${{steps.set-result.outputs.step-result}}
-    runs-on: ubuntu-slim
-    steps:
-      - name: get artifact         #2task)
-        continue-on-error: true
-        uses: actions/download-artifact@v5
-        with:
-          name: ${{ inputs.artifact-name }}
-
-        
-      - name: set the outputs       #4task)
-        id: set-result
-        run: echo "step-result=success" >> $GITHUB_OUTPUT
-        
-      - name: list artifact name  & use secret  #2task) #3task)
-        run: | 
-          ls 
-          echo $secrets.password_of_secrete
-      - name: output data                          #1task)
-        run: echo "hello from the reusable workflow"
