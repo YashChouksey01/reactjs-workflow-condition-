@@ -1,0 +1,8 @@
+name: js-custom-action
+description: a simple js custom action example   
+runs:
+  using: 'node20'  
+  main: main.js
+
+  # https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action
+  # to use input or output we need to install dependencies @action/core

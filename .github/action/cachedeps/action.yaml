@@ -10,7 +10,7 @@ outputs:
     description: 'Whether cache was used or not'
     value: ${{steps.install.outputs.cache}}
 runs:
-  using: 'composite'
+  using: 'composite'  
   steps:
      - name: Cache dependencies
        if: inputs.caching == 'true'
@@ -25,4 +25,8 @@ runs:
        run: |
         npm install
         echo "cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
-       shell: bash
+       shell: bash  
+
+
+
+       
