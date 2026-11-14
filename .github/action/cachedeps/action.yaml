@@ -25,7 +25,7 @@ runs:
        run: |
         npm install
         echo "cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
-       shell: bash  
+       shell: bash    # whenever we will use shell commands we need to mention it 
 
 
 
